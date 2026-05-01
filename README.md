@@ -2,142 +2,69 @@
 
 <img width="1200" src="./src/assets/1.png" alt="GRID WARRIOR BANNER" />
 
+<pre>
+ ██████╗ ██████╗ ██╗██████╗      ██╗    ██╗ █████╗ ██████╗ ██████╗ ██╗ ██████╗ ██████╗ 
+██╔════╝ ██╔══██╗██║██╔══██╗     ██║    ██║██╔══██╗██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗
+██║  ███╗██████╔╝██║██║  ██║     ██║ █╗ ██║███████║██████╔╝██████╔╝██║██║   ██║██████╔╝
+██║   ██║██╔══██╗██║██║  ██║     ██║███╗██║██╔══██║██╔══██╗██╔══██╗██║██║   ██║██╔══██╗
+╚██████╔╝██║  ██║██║██████╔╝     ╚███╔███╔╝██║  ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║
+ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝       ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝
+</pre>
 
+**LE CODE N'EST PLUS DU TEXTE. LE CODE EST L'ARME. TAPEZ POUR VIVRE.**
 
-<div align="center">
-
-
-
-
-
-██████╗ ██████╗ ██╗██████╗     ██╗     ██╗ █████╗ ██╗     ██╗  ██╗███████╗██████╗ 
-
-██╔════╝ ██╔══██╗██║██╔══██╗    ██║     ██║██╔══██╗██║     ██║ ██╔╝██╔════╝██╔══██╗
-
-██║  ███╗██████╔╝██║██║  ██║    ██║ █╗ ██║███████║██║     █████╔╝ █████╗  ██████╔╝
-
-██║   ██║██╔══██╗██║██║  ██║    ██║███╗██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗
-
-╚██████╔╝██║  ██║██║██████╔╝    ╚███╔███╔╝██║  ██║███████╗██║  ██╗███████╗██║  ██║
-
- ╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝      ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
-
-
-
-# ⚔️ GRID WARRIOR
-
-**Le code n'est plus du texte. Le code est l'arme. Tapez pour vivre.**
-
-
-
-[![Open Source Project](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red.svg)](https://github.com/glowku/The-grid-warrior)
-
+[![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red.svg)](https://github.com/glowku/The-grid-warrior)
 [![Engine](https://img.shields.io/badge/Engine-Gemini_Pro_%2B_Z--AI-blueviolet.svg)]()
 
-
-
 </div>
 
+---
 
+### 0x01. SYNTAXE OPÉRATIONNELLE
+
+**The Grid Warrior** est un environnement de survie tactique en temps réel. Oubliez les contrôleurs classiques : ici, la manipulation de la grille s'effectue par **injection directe de logique**. Propulsé par **Gemini Pro & Z-AI**, le moteur transforme vos lignes de code en entités physiques.
+
+*   **Runtime :** Exécution dynamique via IA.
+*   **Physique :** Manipulation de la réalité par propriétés CSS.
+*   **Audio :** Synthèse sonore générative basée sur l'état de la grille.
 
 ---
 
+### 0x02. CAPACITÉS DU SYSTÈME
 
-
-## 🕹️ LE CONCEPT : "THE LIFE-CODE"
-
-**The Grid Warrior** est un jeu de survie en temps réel où la grille est un champ de bataille dynamique. Ce projet, initialement un prototype AI Studio, a été **transcendé par l'IA (Gemini Pro & Z-AI)** pour devenir un moteur d'exécution dynamique unique.
-
-
-
-Ici, tu ne joues pas avec une manette, tu joues avec du **code pur**. Chaque ligne que tu tapes dans ton buffer modifie la physique, la structure et l'intégrité de l'univers.
-
-
+| MODULE | DESCRIPTION | IMPACT SYSTÉMIQUE |
+| :--- | :--- | :--- |
+| **Mutation** | `mutate({char: '@', radius: 10})` | Corruption et ralliement des unités hostiles. |
+| **Complex SVG** | `svg(dragon)` | Instanciation d'entités vectorielles animées. |
+| **Shielding** | `spawn(Guardian, {shape: 'shield'})` | Déploiement de protocoles de défense physique. |
+| **Singularité** | `while(true) { ... }` | Génération d'un trou noir logique (Purge). |
 
 ---
 
+### 0x03. DÉMONSTRATIONS VISUELLES
 
-
-## 🎥 DÉMONSTRATION OPÉRATIONNELLE
-
-
-
-### 1. Manipulation du Monde
-
+#### ■ MANIPULATION DE LA GRILLE
 ![Combat System](./src/assets/1.gif)
+> *Injection de SVG et gestion de factions IA (Rust vs Python).*
 
-> *Injection de SVG dynamiques, gestion des boucliers et combat de factions IA (Rust vs Python).*
-
-
-
-### 2. Altération de la Réalité (CSS Physics)
-
+#### ■ ALTÉRATION DE RÉALITÉ (CSS PHYSICS)
 ![Mutation & CSS](./src/assets/2.gif)
-
-> *Utilisation des propriétés CSS (`blur`, `bold`, `opacity`) pour glitcher l'IA adverse et fortifier tes murs.*
-
-
+> *Utilisation des filtres `blur`, `opacity` et `weight` pour déstabiliser l'adversaire.*
 
 ---
 
+### 0x04. PROTOCOLE D'INSTALLATION
 
+Déployez votre terminal de combat en quatre étapes :
+```bash
+# 1. Acquisition des sources
+git clone [https://github.com/glowku/The-grid-warrior.git](https://github.com/glowku/The-grid-warrior.git)
 
-## 📜 EXTRAITS DU MANUAL OPÉRATIONNEL
+# 2. Initialisation des dépendances
+npm install
 
+# 3. Configuration du noyau (API)
+echo "GEMINI_API_KEY=votre_clef" > .env.local
 
-
-### 🛠️ Commandes de Survie
-
-* **Spawn d'Entités :** `spawn(Guardian, {shape: 'shield'})` pour protéger ton intégrité.
-
-* **Arts Complexes :** `svg(dragon)` invoque une entité animée ultra-complexe dans la grille.
-
-* **Mutation Brutale :** `mutate({char: '@', radius: 10})` corrompt les ennemis pour en faire tes alliés.
-
-* **Black Hole :** `while(true) { ... }` génère un trou noir qui purge l'univers en boucle.
-
-
-
-### 🎵 Musique Générative
-
-Le moteur ne se contente pas d'afficher, il chante. Chaque action, chaque déplacement et chaque collision alimente une **symphonie générative** (gammes majeures/mineures fluides). Fini les bips d'erreur, place à l'harmonie de la destruction.
-
-
-
----
-
-
-
-## 🚀 DÉPLOYER LE TERMINAL (Local)
-
-
-
-Le projet est **Open Source**. Tu peux l'étendre, le modifier et injecter tes propres fonctions logiques.
-
-
-
-1. **Clonage :** `git clone https://github.com/glowku/The-grid-warrior.git`
-
-2. **Install :** `npm install`
-
-3. **Key :** Set `GEMINI_API_KEY` dans `.env.local`
-
-4. **Boot :** `npm run dev`
-
-
-
----
-
-
-
-<div align="center">
-
-
-
-### REJOINS LA GRILLE. DOMINE LE CODE.
-
-<img src="./src/assets/2.png" width="600" alt="End Frame" />
-
-
-
-</div>
+# 4. Boot système
+npm run dev
