@@ -1,20 +1,62 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="1200" src="./src/assets/1.png" alt="GRID WARRIOR BANNER" />
+
+# ⚔️ GRID WARRIOR
+**Le code n'est plus du texte. Le code est l'arme. Tapez pour vivre.**
+
+[![Open Source Project](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red.svg)](https://github.com/glowku/The-grid-warrior)
+[![Engine](https://img.shields.io/badge/Engine-Gemini_Pro_%2B_Z--AI-blueviolet.svg)]()
+
 </div>
 
-# Run and deploy your AI Studio app
+---
 
-This contains everything you need to run your app locally.
+## 🕹️ LE CONCEPT : "THE LIFE-CODE"
+**The Grid Warrior** est un jeu de survie en temps réel où la grille est un champ de bataille dynamique. Ce projet, initialement un prototype AI Studio, a été **transcendé par l'IA (Gemini Pro & Z-AI)** pour devenir un moteur d'exécution dynamique unique.
 
-View your app in AI Studio: https://ai.studio/apps/f421d482-1ee5-409c-8cdd-e9f5f8e30097
+Ici, tu ne joues pas avec une manette, tu joues avec du **code pur**. Chaque ligne que tu tapes dans ton buffer modifie la physique, la structure et l'intégrité de l'univers.
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## 🎥 DÉMONSTRATION OPÉRATIONNELLE
 
+### 1. Manipulation du Monde
+![Combat System](./src/assets/1.gif)
+> *Injection de SVG dynamiques, gestion des boucliers et combat de factions IA (Rust vs Python).*
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 2. Altération de la Réalité (CSS Physics)
+![Mutation & CSS](./src/assets/2.gif)
+> *Utilisation des propriétés CSS (`blur`, `bold`, `opacity`) pour glitcher l'IA adverse et fortifier tes murs.*
+
+---
+
+## 📜 EXTRAITS DU MANUAL OPÉRATIONNEL
+
+### 🛠️ Commandes de Survie
+* **Spawn d'Entités :** `spawn(Guardian, {shape: 'shield'})` pour protéger ton intégrité.
+* **Arts Complexes :** `svg(dragon)` invoque une entité animée ultra-complexe dans la grille.
+* **Mutation Brutale :** `mutate({char: '@', radius: 10})` corrompt les ennemis pour en faire tes alliés.
+* **Black Hole :** `while(true) { ... }` génère un trou noir qui purge l'univers en boucle.
+
+### 🎵 Musique Générative
+Le moteur ne se contente pas d'afficher, il chante. Chaque action, chaque déplacement et chaque collision alimente une **symphonie générative** (gammes majeures/mineures fluides). Fini les bips d'erreur, place à l'harmonie de la destruction.
+
+---
+
+## 🚀 DÉPLOYER LE TERMINAL (Local)
+
+Le projet est **Open Source**. Tu peux l'étendre, le modifier et injecter tes propres fonctions logiques.
+
+1. **Clonage :** `git clone https://github.com/glowku/The-grid-warrior.git`
+2. **Install :** `npm install`
+3. **Key :** Set `GEMINI_API_KEY` dans `.env.local`
+4. **Boot :** `npm run dev`
+
+---
+
+<div align="center">
+
+### REJOINS LA GRILLE. DOMINE LE CODE.
+<img src="./src/assets/2.png" width="600" alt="End Frame" />
+
+</div>
