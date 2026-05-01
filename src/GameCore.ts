@@ -107,7 +107,8 @@ import { sound } from './SoundEngine';
         'WIPE_GRID();'
       ],
       entities: [],
-      enemyDensity: 0
+      enemyDensity: 0,
+      screenFlash: 0
     };
 
     // Track active cells per civ for faster expansion logic
@@ -303,6 +304,9 @@ import { sound } from './SoundEngine';
                  c.life -= 0.0005; // natural decay
                  if (c.life <= 0) this.grid.delete(h);
               }
+              if (c.fontSizeMult && c.fontSizeMult > 2 && c.action === 'PUSH_BACK') {
+                  c.fontSizeMult -= 0.1;
+              }
               // PILLAR 2: Viral Mutation Flicker Processing
               if (c.isCorrupting && c.isCorrupting > 0) {
                  c.isCorrupting -= 0.05; // slowly recovers if not attacked
@@ -364,9 +368,12 @@ import { sound } from './SoundEngine';
           this.healTimer = 0;
       }
 
-      // Screen shake decay
+      // Screen shake and flash decay
       if (this.state.screenShake > 0) {
           this.state.screenShake = Math.max(0, this.state.screenShake - 1);
+      }
+      if (this.state.screenFlash && this.state.screenFlash > 0) {
+          this.state.screenFlash -= 0.02;
       }
 
       // Particles update
@@ -383,8 +390,59 @@ import { sound } from './SoundEngine';
          const ent = this.state.entities[i];
          ent.life -= 1;
          
+         if (ent.type === 'Guardian') {
+             // smoothly follow cursor
+             ent.x += (this.cursor.x - ent.x) * 0.2;
+             ent.y += (this.cursor.y - ent.y) * 0.2;
+         } else if (ent.type === 'Drone' && ent.behavior === 'follow_path') {
+             ent.pathOffset = (ent.pathOffset || 0) + 0.05;
+             const t = (Math.sin(ent.pathOffset) + 1) / 2; // ping pong
+             const bx = 10 * Math.pow(1-t, 2) + 52.5 * 2 * (1-t) * t + 95 * t*t;
+             const by = 80 * Math.pow(1-t, 2) + 10  * 2 * (1-t) * t + 80 * t*t;
+             ent.x += (((ent.startX || 0) + Math.floor(bx / 10)) - ent.x) * 0.5;
+             ent.y += (((ent.startY || 0) + Math.floor(by / 10) - 8) - ent.y) * 0.5;
+         } else if (ent.type === 'SEMANTIC_BLACK_HOLE') {
+             const radius = ent.scale;
+             for (let dx = -radius; dx <= radius; dx++) {
+                 for (let dy = -radius; dy <= radius; dy++) {
+                     if (dx*dx + dy*dy <= radius*radius) {
+                         const hash = this.getHash(Math.floor(ent.x + dx), Math.floor(ent.y + dy));
+                         const cell = this.grid.get(hash);
+                         if (cell && cell.ownerId !== null && cell.ownerId !== 'debris') {
+                            const signX = Math.sign(ent.x - (ent.x + dx));
+                            const signY = Math.sign(ent.y - (ent.y + dy));
+                            if (Math.random() < 0.3) {
+                                this.grid.delete(hash);
+                                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                                    const nextHash = this.getHash(Math.floor(ent.x + dx + signX), Math.floor(ent.y + dy + signY));
+                                    cell.char = '0';
+                                    cell.color = '#ff0000';
+                                    cell.fontSizeMult = undefined;
+                                    cell.fontWeight = undefined;
+                                    cell.border = undefined;
+                                    this.grid.set(nextHash, cell);
+                                }
+                            }
+                         }
+                     }
+                 }
+             }
+         }
+
          // DOMEntities act physically in the game!
-         if (ent.life % 10 === 0) {
+         if (ent.type === 'ASCII_ANIM' && ent.life % 5 === 0) {
+             for(let dx=-2; dx<=2; dx++){
+                for(let dy=-2; dy<=2; dy++){
+                   const h = this.getHash(Math.floor(ent.x+dx), Math.floor(ent.y+dy));
+                   const c = this.grid.get(h);
+                   if (c && c.ownerId && c.ownerId !== 'debris' && c.ownerId !== 'memory_crystal') {
+                       this.grid.delete(h);
+                       this.addXP(2);
+                       this.spawnParticles(Math.floor(ent.x+dx), Math.floor(ent.y+dy), 1);
+                   }
+                }
+             }
+         } else if (ent.life % 10 === 0 && ent.type !== 'SEMANTIC_BLACK_HOLE' && ent.type !== 'Guardian' && ent.type !== 'ASCII_ANIM') {
              const rad = Math.floor(ent.scale * 3);
              this.triggerWipe(Math.floor(ent.x), Math.floor(ent.y), 'null', rad);
          }
@@ -397,6 +455,21 @@ import { sound } from './SoundEngine';
       // Update projectiles
       for (let i = this.projectiles.length - 1; i >= 0; i--) {
          const p = this.projectiles[i];
+         let reflected = false;
+         this.state.entities.forEach(g => {
+            if (g.type === 'Guardian' && g.effect === 'reflect_projectiles') {
+                const dx = p.x - g.x;
+                const dy = p.y - g.y;
+                if (Math.sqrt(dx*dx + dy*dy) <= g.scale * 4) {
+                   p.dx *= -1;
+                   p.dy *= -1;
+                   p.ownerId = 'null';
+                   p.color = '#00ff41';
+                   reflected = true;
+                }
+            }
+         });
+         
          p.x += p.dx;
          p.y += p.dy;
          
@@ -427,6 +500,10 @@ import { sound } from './SoundEngine';
              // Player projectile hits enemy
              this.grid.delete(hash);
              this.spawnParticles(Math.round(p.x), Math.round(p.y), 3);
+             // Drop memory data segment for user instead of just debris
+             if (Math.random() < 0.3) {
+                 this.grid.set(hash, { char: '✧', color: '#ffcc00', ownerId: 'memory_crystal', life: 1 });
+             } 
              this.addXP(2);
          }
       }
@@ -510,13 +587,24 @@ import { sound } from './SoundEngine';
               // Damage if hits user code
               const targetHash = this.getHash(tx, ty);
               const targetCell = this.grid.get(targetHash);
-              if (targetCell && targetCell.ownerId === null && !targetCell.isWall && targetHash !== `${this.cursor.x},${this.cursor.y}`) {
-                 this.takeDamage(1); 
+              
+              if (targetCell && targetCell.action === 'PUSH_BACK') {
+                 targetCell.fontSizeMult = Math.min(4, (targetCell.fontSizeMult || 2) + 0.5);
+                 this.projectiles.push({
+                     x: tx, y: ty, dx: -dx*2, dy: -dy*2, char: '>', color: '#ffffff', ownerId: 'null'
+                 });
+              } else {
+                 this.infect(tx, ty, civ.id);
                  
-                 // Mutation: AI eats your code, converts to its color, and feeds its Boss!
-                 targetCell.ownerId = civ.id;
-                 targetCell.char = RANDOM_CHARS[Math.floor(Math.random() * RANDOM_CHARS.length)];
-                 targetCell.color = civ.color;
+                 // Damage if hits user code
+                 const infectedTargetCell = this.grid.get(targetHash);
+                 if (infectedTargetCell && infectedTargetCell.ownerId === null && !infectedTargetCell.isWall && targetHash !== `${this.cursor.x},${this.cursor.y}`) {
+                    this.takeDamage(1); 
+                    
+                    // Mutation: AI eats your code, converts to its color, and feeds its Boss!
+                    infectedTargetCell.ownerId = civ.id;
+                    infectedTargetCell.char = RANDOM_CHARS[Math.floor(Math.random() * RANDOM_CHARS.length)];
+                    infectedTargetCell.color = civ.color;
                  
                  const boss = this.bosses.find(b => b.civId === civ.id);
                  if (boss) {
@@ -530,8 +618,9 @@ import { sound } from './SoundEngine';
                  
                  // Glitcher might deform code
                  if (civ.behavior === 'GLITCHER' && Math.random() < 0.3) {
-                     targetCell.char = RANDOM_CHARS[Math.floor(Math.random() * RANDOM_CHARS.length)];
+                     infectedTargetCell.char = RANDOM_CHARS[Math.floor(Math.random() * RANDOM_CHARS.length)];
                  }
+              }
               }
             }
           }
@@ -675,14 +764,135 @@ import { sound } from './SoundEngine';
       let actionTaken = false;
       let powerLevel = Math.max(2, Math.floor(bufferClean.length / 2)) * this.state.cursorPower;
 
+      const fullBuffer = bufferClean.replace(/\s+/g, ' ');
+
+      // 1. Guardian Protocol
+      const normalizedBuffer = fullBuffer.replace(/\s+/g, '').toLowerCase();
+      if (normalizedBuffer.includes('spawn(guardian') && normalizedBuffer.includes('circle') && normalizedBuffer.includes('reflect_projectiles')) {
+         this.state.entities.push({
+             id: 'Guardian_' + Date.now(),
+             type: 'Guardian',
+             shape: 'circle',
+             x: this.cursor.x, y: this.cursor.y,
+             scale: Math.max(4, powerLevel/4),
+             life: 1000,
+             effect: 'reflect_projectiles',
+             cssFilter: (fullBuffer.includes('CSS.animate') || fullBuffer.includes('drop-shadow')) ? 'drop-shadow(0 0 15px #00FF41)' : undefined
+         });
+         actionTaken = true;
+         powerLevel = 20;
+      }
+      
+      // 2. Semantic Black Hole
+      else if (normalizedBuffer.includes('while(true)') && normalizedBuffer.includes('purge') && normalizedBuffer.includes('mutate')) {
+         this.state.entities.push({
+             id: 'semantic_blackhole_' + Date.now(),
+             type: 'SEMANTIC_BLACK_HOLE',
+             shape: 'pulse',
+             x: this.cursor.x, y: this.cursor.y,
+             scale: 25,
+             life: 1000,
+         });
+         sound.playTone(50, 'sawtooth', 2.0, 0.5, true);
+         actionTaken = true;
+         powerLevel = 25;
+      }
+      
+      // 3. SVG Invocation
+      else if (normalizedBuffer.includes('<svg') && normalizedBuffer.includes('animatedragon') && normalizedBuffer.includes('spawn(drone')) {
+         const svgMatch = fullBuffer.match(/<svg[\s\S]*?<\/svg>/i) || bufferClean.match(/<svg[\s\S]*?<\/svg>/i);
+         if (svgMatch) {
+             this.state.entities.push({
+                 id: 'svg_drone_path_' + Date.now(),
+                 type: 'SVG_ANIMATED',
+                 shape: 'custom',
+                 x: this.cursor.x, y: this.cursor.y,
+                 scale: 3,
+                 life: 1000,
+                 svgData: svgMatch[0]
+             });
+         }
+         for (let t = 0; t <= 1; t += 0.05) {
+             const bx = 10 * Math.pow(1-t, 2) + 52.5 * 2 * (1-t) * t + 95 * t*t;
+             const by = 80 * Math.pow(1-t, 2) + 10  * 2 * (1-t) * t + 80 * t*t;
+             const px = this.cursor.x + Math.floor(bx / 10);
+             const py = this.cursor.y + Math.floor(by / 10) - 8;
+             this.grid.set(this.getHash(px, py), { char: '+', color: '#00ffff', ownerId: null, life: 10, isWall: true });
+         }
+         this.state.entities.push({
+             id: 'Drone_' + Date.now(),
+             type: 'Drone',
+             shape: 'drone',
+             behavior: 'follow_path',
+             x: this.cursor.x, y: this.cursor.y,
+             scale: 1,
+             life: 1000,
+             pathOffset: 0,
+             startX: this.cursor.x,
+             startY: this.cursor.y
+         });
+         actionTaken = true;
+         powerLevel = 10;
+      }
+      
+      // 4. Data Fortress
+      else if (normalizedBuffer.includes('font-weight:bold') && normalizedBuffer.includes('push_back')) {
+         for (let i=-3; i<=3; i++) {
+             for (let j=-3; j<=3; j++) {
+                 if (Math.abs(i) === 3 || Math.abs(j) === 3) {
+                     const h = this.getHash(this.cursor.x+i, this.cursor.y+j);
+                     const c = this.grid.get(h) || { char: '#', color: '#ffffff', ownerId: null, life: 5 };
+                     c.fontWeight = 'bold';
+                     c.fontSizeMult = 2;
+                     c.border = '2px solid #ffffff';
+                     c.action = 'PUSH_BACK';
+                     c.isWall = true;
+                     c.ownerId = null;
+                     this.grid.set(h, c);
+                 }
+             }
+         }
+         actionTaken = true;
+         powerLevel = 15;
+      }
+      
+      // 5. Symphonic Wipe
+      else if (normalizedBuffer.includes('level.up()') && normalizedBuffer.includes('user_space')) {
+         this.state.level++;
+         this.grid.forEach((c, h) => {
+             if (c.ownerId) {
+                 c.ownerId = null; 
+                 c.color = '#ffffff';
+                 c.char = '¯\\_(ツ)_/¯'[Math.floor(Math.random() * 11)] || ' ';
+             }
+         });
+         
+         for(let i=-10; i<=10; i+=10) {
+             for(let j=-5; j<=5; j+=5) {
+                 this.state.entities.push({
+                     id: 'ascii_celeb_' + Date.now() + Math.random(),
+                     type: 'ASCII_ANIM',
+                     shape: 'custom',
+                     x: this.cursor.x + i, y: this.cursor.y + j,
+                     scale: 1,
+                     life: 300
+                 });
+             }
+         }
+         if ((sound as any).playSymphonicWipe) (sound as any).playSymphonicWipe();
+         this.state.screenFlash = 1.0; 
+         actionTaken = true;
+         powerLevel = 50;
+      }
+
       // 1. PILLAR: THE LIFE-CODE (DYNAMIC FUNCTION PARSER FOR INFINITE RULES)
       const funcMatch = bufferClean.match(/^([a-zA-Z_.]+)\s*\(\s*(?:([a-zA-Z_]+)\s*,?)?\s*(?:\{([^}]+)\})?\s*\)$/i);
-      const actionFn = funcMatch ? funcMatch[1].toLowerCase() : '';
+      const actionFn = !actionTaken && funcMatch ? funcMatch[1].toLowerCase() : '';
       const targetFn = funcMatch && funcMatch[2] ? funcMatch[2] : 'undefined';
       const propsStr = funcMatch ? funcMatch[3] : '';
       
       let props: any = {};
-      if (propsStr) {
+      if (propsStr && !actionTaken) {
            propsStr.split(',').forEach(pair => {
                const parts = pair.split(':');
                if (parts.length === 2) {
@@ -694,7 +904,7 @@ import { sound } from './SoundEngine';
       }
 
       // Check if it's a known function first
-      if (actionFn === 'spawn' || actionFn === 'summon') {
+      if (!actionTaken && (actionFn === 'spawn' || actionFn === 'summon')) {
          this.state.entities.push({
             id: targetFn + Date.now(),
             type: targetFn,
@@ -1055,7 +1265,7 @@ import { sound } from './SoundEngine';
         // Find debris and move it towards player
         const entries = Array.from(this.grid.entries());
         entries.forEach(([hash, cell]) => {
-            if (cell.ownerId === 'debris') {
+            if (cell.ownerId === 'debris' || cell.ownerId === 'memory_crystal') {
                 const [x, y] = hash.split(',').map(Number);
                 if (Math.random() < 0.2) {
                    const moveX = Math.sign(this.cursor.x - x);
@@ -1064,8 +1274,12 @@ import { sound } from './SoundEngine';
                    
                    if (x + moveX === this.cursor.x && y + moveY === this.cursor.y) {
                       // Absorb
-                      this.addXP(2);
-                      this.state.integrity = Math.min(this.state.maxIntegrity, this.state.integrity + 1);
+                      this.addXP(cell.ownerId === 'memory_crystal' ? 10 : 2);
+                      this.state.integrity = Math.min(this.state.maxIntegrity, this.state.integrity + (cell.ownerId === 'memory_crystal' ? 5 : 1));
+                      if (cell.ownerId === 'memory_crystal') {
+                          this.state.cursorPower += 1;
+                          this.addCombo();
+                      }
                    } else {
                       this.grid.set(this.getHash(x + moveX, y + moveY), cell);
                    }

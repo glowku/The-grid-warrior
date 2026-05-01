@@ -15,7 +15,7 @@ class SoundEngine {
       // Setup continuous combo hum
       this.comboOsc = this.ctx.createOscillator();
       this.comboGain = this.ctx.createGain();
-      this.comboOsc.type = 'sawtooth';
+      this.comboOsc.type = 'sine';
       this.comboOsc.frequency.value = 40; // Base low hum
       this.comboGain.gain.value = 0; // Silent by default
       
@@ -55,7 +55,7 @@ class SoundEngine {
     }
   }
 
-  private playTone(freq: number, type: OscillatorType, duration: number, volume: number = 0.1, distortion: boolean = false) {
+  public playTone(freq: number, type: OscillatorType, duration: number, volume: number = 0.1, distortion: boolean = false) {
     this.init();
     if (!this.ctx) return;
 
@@ -169,11 +169,9 @@ class SoundEngine {
 
     if (lang === 'JavaScript' || lang === 'TypeScript') {
        toneType = 'square';
-       distortion = true;
        root = 523.25; // High glitchy C5
     } else if (lang === 'C++' || lang === 'C') {
-       toneType = 'sawtooth';
-       distortion = true;
+       toneType = 'triangle';
        root = 65.41; // Deep Sub bass C2
     } else if (lang === 'Rust' || lang === 'Haskell') {
        toneType = 'sine'; // Pure crystalline
@@ -206,6 +204,18 @@ class SoundEngine {
         pad.start();
         pad.stop(this.ctx.currentTime + 4.0);
     }
+  }
+
+  playSymphonicWipe() {
+    this.init();
+    if (!this.ctx) return;
+    const cMajor = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
+    cMajor.forEach((freq, idx) => {
+        setTimeout(() => {
+            this.playTone(freq * 2, 'sine', 0.5, 0.1);
+            this.playTone(freq * 3, 'triangle', 0.5, 0.05);
+        }, idx * 150);
+    });
   }
 
   playHit() {

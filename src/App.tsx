@@ -128,19 +128,44 @@ export default function App() {
        ctx.font = `${Math.max(8, CELL_SIZE * baseScale)}px "JetBrains Mono"`;
 
        const frame = Math.floor(Date.now() / 200);
-       let char = `[${ent.type}]`;
+       let char = '';
        
        if (ent.type === 'CSS_BLUR') {
             ctx.filter = `blur(${ent.scale}px)`;
             ctx.fillStyle = '#ffffff';
             ctx.fillText("≈≈≈", sx - scaledCell, sy);
             ctx.filter = 'none';
-            char = '';
+       } else if (ent.type === 'SVG_ANIMATED') {
+            // Drawn by React DOM layer
+       } else if (ent.type === 'Guardian') {
+            ctx.strokeStyle = '#00FF41';
+            ctx.lineWidth = 2 * coreRef.current.zoom;
+            if (ent.cssFilter && ent.cssFilter.includes('drop-shadow')) {
+                ctx.shadowColor = '#00FF41';
+                ctx.shadowBlur = 15 * coreRef.current.zoom;
+            }
+            ctx.save();
+            ctx.translate(sx, sy);
+            ctx.rotate(Date.now() / 1000);
+            ctx.beginPath();
+            const r = ent.scale * scaledCell;
+            ctx.arc(0, 0, r, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([5, 10]);
+            ctx.beginPath();
+            ctx.arc(0, 0, r * 0.8, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+            ctx.shadowBlur = 0;
+            ctx.setLineDash([]);
+       } else if (ent.type === 'Drone') {
+            ctx.fillStyle = '#00ffff';
+            char = "►";
        } else if (ent.type === 'SUPER_OBJ') {
             const shapes = ["▚", "▞", "▛", "▟"];
             char = shapes[frame % shapes.length];
             ctx.fillStyle = ent.behavior === 'AGGRESSIVE' ? '#ff0055' : '#00ff41';
-       } else if (ent.type === 'BLACK_HOLE') {
+       } else if (ent.type === 'BLACK_HOLE' || ent.type === 'SEMANTIC_BLACK_HOLE') {
             ctx.fillStyle = '#0a001a';
             ctx.beginPath();
             ctx.arc(sx + scaledCell/2, sy + scaledCell/2, scaledCell * ent.scale, 0, Math.PI * 2);
@@ -198,6 +223,12 @@ export default function App() {
     // Draw Error/Damage Flashes
     if (core.state.isGameOver) {
       ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+      ctx.fillRect(0, 0, width, height);
+    }
+    
+    // Draw Symphonic Flash
+    if (core.state.screenFlash && core.state.screenFlash > 0) {
+      ctx.fillStyle = `rgba(255, 255, 255, ${core.state.screenFlash})`;
       ctx.fillRect(0, 0, width, height);
     }
   }, []);

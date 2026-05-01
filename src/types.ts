@@ -11,6 +11,8 @@ export interface Cell {
   fontWeight?: string;
   fontStyle?: string;
   fontSizeMult?: number;
+  action?: string;
+  border?: string;
 }
 
 export interface Position {
@@ -76,6 +78,10 @@ export interface DOMEntity {
   behavior?: string;
   effect?: any;
   svgData?: string;
+  cssFilter?: string;
+  pathOffset?: number;
+  startX?: number;
+  startY?: number;
 }
 
 export interface GameState {
@@ -102,4 +108,5 @@ export interface GameState {
   memorySlots: string[];
   entities: DOMEntity[];
   enemyDensity: number;
+  screenFlash?: number;
 }
