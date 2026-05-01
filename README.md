@@ -47,7 +47,7 @@
   <img src="./src/assets/1.gif" width="100%" alt="Combat System" />
   <img src="./src/assets/2.gif" width="100%" alt="CSS Physics" />
   <br />
-  <img src="./src/assets/3.png" width="600" alt="End Frame" />
+
   <i>Manipulation de la Grille & Altérations de Réalité</i>
 </div>
 ### 0x03. EXTRAITS DU MANUEL
@@ -58,6 +58,7 @@
 
 <div align="center">
 <img src="./src/assets/2.png" width="600" alt="End Frame" />
+    <img src="./src/assets/3.png" width="600" alt="End Frame" />
 </div>
 
 #### ■ COMMANDES SYSTÈME
