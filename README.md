@@ -1,5 +1,4 @@
 <div align="center">
-
 <img width="1200" src="./src/assets/1.png" alt="GRID WARRIOR BANNER" />
 
 ```diff
@@ -10,7 +9,7 @@
 + ╚██████╔╝██║  ██║██║██████╔╝      ╚███╔███╔╝██║  ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║
 +  ╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝        ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝
 ```
-**ENVIRONMENT: STABLE | REALITY: PROGRAMMABLE | ACCESS: GRANTED**
+**ENVIRONMENT: STABLE | REALITY: PROGRAMMABLE | ACCESS: GRANTED**(./src/assets/1.gif)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
@@ -42,8 +41,23 @@
 | **AI Nexus** | `STANDBY` | Module optionnel pour l'évolution assistée (Gemini). |
 
 ---
+### 0x02. DÉMONSTRATIONS VISUELLES
 
+<div align="center">
+  <img src="./src/assets/1.gif" width="48%" alt="Combat System" />
+  <img src="./src/assets/2.gif" width="48%" alt="CSS Physics" />
+  <br />
+  <i>Manipulation de la Grille & Altérations de Réalité</i>
+</div>
 ### 0x03. EXTRAITS DU MANUEL
+
+*   **Mutation :** `mutate({char: '@', radius: 10})` — Corrompt les entités adverses.
+*   **Shielding :** `spawn(Guardian)` — Déploie un protocole de protection.
+*   **Singularité :** `while(true) { ... }` — Purge complète de la grille.
+
+<div align="center">
+<img src="./src/assets/2.png" width="600" alt="End Frame" />
+</div>
 
 #### ■ COMMANDES SYSTÈME
 *   `spawn(Guardian)` : Déploie une unité de défense.
@@ -57,6 +71,8 @@ Si une `GEMINI_API_KEY` est détectée, le terminal débloque :
 *   Évolution adaptative du biome.
 
 ---
+
+
 
 ### 0x04. DÉPLOIEMENT DU TERMINAL
 ```bash
