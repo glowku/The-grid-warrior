@@ -44,8 +44,8 @@
 ### 0x02. DÉMONSTRATIONS VISUELLES
 
 <div align="center">
-  <img src="./src/assets/1.gif" width="48%" alt="Combat System" />
-  <img src="./src/assets/2.gif" width="48%" alt="CSS Physics" />
+  <img src="./src/assets/1.gif" width="100%" alt="Combat System" />
+  <img src="./src/assets/2.gif" width="100%" alt="CSS Physics" />
   <br />
   <i>Manipulation de la Grille & Altérations de Réalité</i>
 </div>
