@@ -10,60 +10,67 @@
 + ╚██████╔╝██║  ██║██║██████╔╝      ╚███╔███╔╝██║  ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║
 +  ╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝        ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝
 ```
-**LE CODE N'EST PLUS DU TEXTE. LE CODE EST L'ARME. TAPEZ POUR VIVRE.**
+**ENVIRONMENT: STABLE | REALITY: PROGRAMMABLE | ACCESS: GRANTED**
 
-[![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red.svg)](https://github.com/glowku/The-grid-warrior)
-[![Engine](https://img.shields.io/badge/Engine-Gemini_Pro_%2B_Z--AI-blueviolet.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![AI-Optional](https://img.shields.io/badge/AI_Engine-Optional-orange.svg)]()
 
 </div>
 
 ---
 
-### 0x01. SYNTAXE OPÉRATIONNELLE
+### 0x01. INITIALISATION
 
-**The Grid Warrior** est un environnement de survie tactique en temps réel. Oubliez les contrôleurs classiques : ici, la manipulation de la grille s'effectue par **injection directe de logique**. Propulsé par **Gemini Pro & Z-AI**, le moteur transforme vos lignes de code en entités physiques.
+**Grid Warrior** est un simulateur de survie tactique où le code est la seule interface. Le projet est conçu pour fonctionner de manière autonome en tant que moteur de jeu "sandbox".
 
-*   **Runtime :** Exécution dynamique via IA.
-*   **Physique :** Manipulation de la réalité par propriétés CSS.
-*   **Audio :** Synthèse sonore générative basée sur l'état de la grille.
+> [!IMPORTANT]
+> **COMPATIBILITÉ IA :** L'intégration de Gemini Pro et Z-AI est **optionnelle**. Le jeu dispose d'un mode de base robuste. L'activation de l'IA permet simplement une génération procédurale et une interaction dynamique avancée via le prompt.
 
 ---
 
-### 0x02. CAPACITÉS DU SYSTÈME
+### 0x02. SPÉCIFICATIONS TECHNIQUES
 
-| MODULE | DESCRIPTION | IMPACT SYSTÉMIQUE |
+| MODULE | ÉTAT | DESCRIPTION |
 | :--- | :--- | :--- |
-| **Mutation** | `mutate({char: '@', radius: 10})` | Corruption et ralliement des unités hostiles. |
-| **Complex SVG** | `svg(dragon)` | Instanciation d'entités vectorielles animées. |
-| **Shielding** | `spawn(Guardian, {shape: 'shield'})` | Déploiement de protocoles de défense physique. |
-| **Singularité** | `while(true) { ... }` | Génération d'un trou noir logique (Purge). |
+| **Core Engine** | `READY` | Système de rendu haute performance basé sur React/Vite. |
+| **Logic Layer** | `ACTIVE` | Interprétation des commandes en temps réel. |
+| **Visuals** | `STABLE` | Physique CSS et gestion dynamique des assets SVG. |
+| **AI Nexus** | `STANDBY` | Module optionnel pour l'évolution assistée (Gemini). |
 
 ---
 
-### 0x03. DÉMONSTRATIONS VISUELLES
+### 0x03. EXTRAITS DU MANUEL
 
-#### ■ MANIPULATION DE LA GRILLE
-![Combat System](./src/assets/1.gif)
-> *Injection de SVG et gestion de factions IA (Rust vs Python).*
+#### ■ COMMANDES SYSTÈME
+*   `spawn(Guardian)` : Déploie une unité de défense.
+*   `mutate(selector, property)` : Altère la structure moléculaire (CSS) des cibles.
+*   `purge()` : Nettoyage complet de la mémoire de la grille.
 
-#### ■ ALTÉRATION DE RÉALITÉ (CSS PHYSICS)
-![Mutation & CSS](./src/assets/2.gif)
-> *Utilisation des filtres `blur`, `opacity` et `weight` pour déstabiliser l'adversaire.*
+#### ■ MODE IA (OPTIONNEL)
+Si une `GEMINI_API_KEY` est détectée, le terminal débloque :
+*   Génération de vagues d'ennemis intelligentes.
+*   Interprétation de commandes en langage naturel.
+*   Évolution adaptative du biome.
 
 ---
 
-### 0x04. PROTOCOLE D'INSTALLATION
-
-Déployez votre terminal de combat en quatre étapes :
+### 0x04. DÉPLOIEMENT DU TERMINAL
 ```bash
-# 1. Acquisition des sources
+# Clonez le dépôt
 git clone [https://github.com/glowku/The-grid-warrior.git](https://github.com/glowku/The-grid-warrior.git)
 
-# 2. Initialisation des dépendances
+# Accédez au répertoire
+cd The-grid-warrior
+
+# Installation des dépendances
 npm install
 
-# 3. Configuration du noyau (API)
-echo "GEMINI_API_KEY=votre_clef" > .env.local
+# Configuration (Facultatif : ajoutez votre clé IA ici si besoin)
+cp .env.example .env.local
 
-# 4. Boot système
+# Lancement du système
 npm run dev
